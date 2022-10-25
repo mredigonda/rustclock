@@ -6,7 +6,7 @@ RustClock is an extremely easy-to-use time tracking tool for the command line.
 
 ### Functionality
 
-- [ ] Add sqlite library
+- [x] Add sqlite library
 - [x] Add terminal prompt library
 
 ### Documentation

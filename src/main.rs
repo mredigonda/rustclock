@@ -1,6 +1,14 @@
 use inquire::{error::InquireResult, Select, Text};
+use rusqlite::Connection;
 
 mod state;
+
+#[derive(Debug)]
+struct Person {
+    id: i32,
+    name: String,
+    data: Option<Vec<u8>>,
+}
 
 fn main() -> InquireResult<()> {
     let initial_state = state::State::new();
@@ -20,6 +28,30 @@ fn main() -> InquireResult<()> {
         "Starting activity {} from project {} at {}",
         activity_name, activity_project, 1
     );
+
+    let conn = Connection::open("./.rustclock.db3").unwrap();
+
+    conn.execute(
+        "CREATE TABLE IF NOT EXISTS person (
+        id    INTEGER PRIMARY KEY,
+        name  TEXT NOT NULL,
+        data  BLOB
+    )",
+        (),
+    )
+    .unwrap();
+
+    let me = Person {
+        id: 0,
+        name: activity_name,
+        data: None,
+    };
+
+    conn.execute(
+        "INSERT INTO person (name, data) VALUES (?1, ?2)",
+        (&me.name, &me.data),
+    )
+    .unwrap();
 
     Ok(())
 }

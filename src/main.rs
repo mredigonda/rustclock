@@ -1,3 +1,7 @@
+mod state;
+
 fn main() {
-    println!("Hello, world!");
+    let initial_state = state::State::new();
+
+    println!("Hello, world! {}", initial_state.current_activity.unwrap());
 }

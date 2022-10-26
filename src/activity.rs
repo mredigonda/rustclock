@@ -38,14 +38,15 @@ impl Activity {
         Self::initialize_storage(storage);
         let desc: &String = &self.description;
         let now = time::Time::now();
+        println!("Project id: {}", self.project_id);
 
         if self.id == -1 {
             // In this case, we have a new activity that does not yet have an allocated id
             // We need to INSERT it into the storage
             storage
                 .execute(
-                    "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
-                    (&desc, now),
+                    "INSERT INTO activity (description, start_time, project_id) VALUES (?1, ?2, ?3)",
+                    (&desc, now, self.project_id),
                 )
                 .expect("RUSTCLOCK0002: There was a problem when saving an activity.");
             self.id = storage.last_insert_rowid();
@@ -92,7 +93,7 @@ impl Activity {
                         start_time VARCHAR(255) NOT NULL,
                         end_time VARCHAR(255),
                         project_id INT NOT NULL,
-                        FOREIGN KEY (project_id) REFERENCES project(project_id)
+                        FOREIGN KEY (project_id) REFERENCES project(id)
                 )",
                 (),
             )

@@ -13,14 +13,14 @@ For now, you will have to compile it yourself with Cargo.
 1. `git clone git@github.com:mredigonda/rustclock.git`
 2. `cd rustclock`
 3. `cargo build --release`
-4. `cp ./target/release/rustclock ~/.bin/,rustclock` (or copy it somewhere else in your [PATH](http://www.linfo.org/path_env_var.html#:~:text=PATH%20is%20an%20environmental%20variable,commands%20issued%20by%20a%20user.))
+4. `sudo cp ./target/release/rustclock /usr/local/bin/,rustclock` (or copy it somewhere else in your [PATH](http://www.linfo.org/path_env_var.html#:~:text=PATH%20is%20an%20environmental%20variable,commands%20issued%20by%20a%20user.))
 5. Every time you use it, type `,r` and then hit tab, and it should autocomplete to `,rustclock`, then just press enter to run the program!
 
 In the future, I plan to have an easier way to install it.
 
 ## How does it work?
 
-It creates entries in a SQLite database with the logs of your activities, and lets you add your tasks in a super friendly way.
+It creates entries in a SQLite database on your home folder with the logs of your activities, and lets you add your tasks in a super friendly way.
 
 ## Motivation
 

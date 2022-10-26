@@ -19,7 +19,7 @@ impl Activity {
 
     pub fn save(&self, storage: &mut Connection) {
         Self::initialize_storage(storage);
-        let desc: String = String::from("a sample task saved");
+        let desc: &String = &self.description;
         storage
             .execute("INSERT INTO activity (description) VALUES (?1)", (&desc,))
             .expect("RUSCLOCK0002: There was a problem when saving an activity.");

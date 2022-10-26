@@ -5,8 +5,6 @@ mod activity;
 mod state;
 
 fn main() -> InquireResult<()> {
-    let new_activity = activity::Activity::new(String::from("nueva tarea"));
-
     // let current_activity =
     //     activity::Activity::get_current().expect("Oops, parece que no hay actividad actual.");
     let initial_state = state::State::new();
@@ -26,6 +24,8 @@ fn main() -> InquireResult<()> {
         "Starting activity {} from project {} at {}",
         activity_name, activity_project, 1
     );
+
+    let new_activity = activity::Activity::new(activity_name);
 
     let mut conn = Connection::open("./.rustclock.db3").unwrap();
     new_activity.save(&mut conn);

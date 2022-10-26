@@ -10,6 +10,14 @@
 
 ![demo](https://user-images.githubusercontent.com/25920622/198069008-0d5ec99a-9c7b-4312-aba8-2243dad57185.gif)
 
+## Motivation
+
+Command line tools often require we invest a considerable amount of time into learning the different configuration options on how to use them.
+
+While those options are great if we are using the tool in connection with some script that needs to use the program in a very specific way, it's **completely unnecessary** for human users.
+
+RustClock was created as a means to demonstrate how much better it can be. You don't need to know anything about RustClock to start using it, just run it, as many times as you need, and it will work as a conversation with the tool in order to achieve what you want.
+
 ## How to run
 
 For now, you will have to compile it yourself with Cargo.
@@ -25,11 +33,3 @@ In the future, I plan to have an easier way to install it.
 ## How does it work?
 
 It creates entries in a SQLite database on your home folder with the logs of your activities, and lets you add your tasks in a super friendly way.
-
-## Motivation
-
-Command line tools often require we invest a considerable amount of time into learning the different configuration options on how to use them.
-
-While those options are great if we are using the tool in connection with some script that needs to use the program in a very specific way, it's **completely unnecessary** for human users.
-
-RustClock was created as a means to demonstrate how much better it can be. You don't need to know anything about RustClock to start using it, just run it, as many times as you need, and it will work as a conversation with the tool in order to achieve what you want.

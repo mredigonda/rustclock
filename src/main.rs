@@ -27,23 +27,16 @@ fn main() -> Result<(), Box<dyn error::Error>> {
             let mut activity_project = Select::new("Project:", project_names).prompt()?;
             if activity_project == String::from(constants::CREATE_NEW_PROJECT_STRING) {
                 let project_name = Text::new("Project name:").prompt()?;
-                println!(
-                    "TODO: Should try to create new project named: {}",
-                    project_name
-                );
                 let mut new_project = project::Project::new(project_name);
                 new_project.save(&mut conn);
-
-                println!("{:?}", new_project);
-
                 activity_project = new_project.name;
             }
             let project_id =
                 project::Project::get_project_id_from_name(&mut conn, &activity_project)
                     .expect("RUSTCLOCK0006: Could not get id from project name.");
-            println!("Should be created in project: {}", activity_project);
             let mut new_activity = activity::Activity::new(activity_name, project_id);
             new_activity.save(&mut conn);
+            println!("⌛️ Tracking new activity: {}", new_activity.description);
         } else {
             println!("😠 Ok bye.");
         }

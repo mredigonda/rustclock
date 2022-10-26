@@ -39,11 +39,7 @@ impl Project {
 
     pub fn get_project_id_from_name(storage: &mut Connection, name: &String) -> Option<i64> {
         let projects = Project::get_projects(storage).unwrap();
-        let project = projects.iter().find(|project| {
-            println!("Is {} equal to {}?", project.name, *name);
-            project.name == *name
-            // println!("{:?}", project);
-        });
+        let project = projects.iter().find(|project| project.name == *name);
         // TODO: find a way to better work with Option<_> type
         match project {
             Some(p) => Some(p.id),

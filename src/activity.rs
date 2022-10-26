@@ -21,9 +21,10 @@ impl Activity {
     }
 
     pub fn get_report(&self) -> String {
+        let duration_str = time::Time::elapsed_since(&self.start_time);
         format!(
             "Activity \"{}\" from project \"{}\" was started on {}",
-            self.description, "<project>", self.start_time,
+            self.description, "<project>", duration_str,
         )
     }
 

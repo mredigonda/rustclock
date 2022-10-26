@@ -1,4 +1,4 @@
-use inquire::{Confirm, Select, Text};
+use inquire::{Confirm, Text};
 use rusqlite::Connection;
 use std::error;
 
@@ -14,7 +14,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         let create_new = Confirm::new("Do you wish to create one?").prompt()?;
         if create_new {
             let activity_name = Text::new("Activity name:").prompt()?;
-            let activity_project = Select::new("Project:", get_projects()).prompt()?;
+            // let activity_project = Select::new("Project:", get_projects()).prompt()?;
             let new_activity = activity::Activity::new(activity_name);
             new_activity.save(&mut conn);
         } else {
@@ -41,6 +41,6 @@ fn main() -> Result<(), Box<dyn error::Error>> {
     Ok(())
 }
 
-fn get_projects() -> Vec<String> {
-    vec![String::from("<Create new>")]
-}
+// fn get_projects() -> Vec<String> {
+//     vec![String::from("<Create new>")]
+// }

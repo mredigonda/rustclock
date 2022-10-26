@@ -8,7 +8,9 @@ mod project;
 mod time;
 
 fn main() -> Result<(), Box<dyn error::Error>> {
-    let mut conn = Connection::open("./.rustclock.db3").unwrap();
+    let mut home_dir = dirs::home_dir().unwrap();
+    home_dir.push(".rustclock.db3");
+    let mut conn = Connection::open(home_dir).unwrap();
 
     let current_activity = activity::Activity::get_current(&mut conn)?;
     if current_activity.is_none() {

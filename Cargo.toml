@@ -18,3 +18,4 @@ inquire = "0.4.0"
 # is why it is not a default feature -- it could become hard to disable.
 rusqlite = { version = "0.28.0", features = ["bundled"] }
 chrono = "0.4"
+dirs = "4.0.0"

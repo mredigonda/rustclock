@@ -1,7 +1,5 @@
-use std::time::SystemTime;
-
+use crate::time;
 use rusqlite::Connection;
-// mod time;
 
 pub struct Activity {
     pub id: i32,
@@ -23,12 +21,12 @@ impl Activity {
     pub fn save(&self, storage: &mut Connection) {
         Self::initialize_storage(storage);
         let desc: &String = &self.description;
-        // let now = Time
+        let now = time::Time::now();
 
         storage
             .execute(
-                "INSERT INTO activity (description) VALUES (?1)",
-                (&desc,), //, now),
+                "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
+                (&desc, now),
             )
             .expect("RUSCLOCK0002: There was a problem when saving an activity.");
     }
@@ -38,7 +36,9 @@ impl Activity {
             .execute(
                 "CREATE TABLE IF NOT EXISTS activity (
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        description VARCHAR(255) NOT NULL
+                        description VARCHAR(255) NOT NULL,
+                        start_time VARCHAR(255) NOT NULL,
+                        end_time VARCHAR(255)
                 )",
                 (),
             )

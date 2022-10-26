@@ -3,6 +3,7 @@ use rusqlite::Connection;
 
 mod activity;
 mod state;
+mod time;
 
 fn main() -> InquireResult<()> {
     // let current_activity =

@@ -1,4 +1,7 @@
+use std::time::SystemTime;
+
 use rusqlite::Connection;
+// mod time;
 
 pub struct Activity {
     pub id: i32,
@@ -20,8 +23,13 @@ impl Activity {
     pub fn save(&self, storage: &mut Connection) {
         Self::initialize_storage(storage);
         let desc: &String = &self.description;
+        // let now = Time
+
         storage
-            .execute("INSERT INTO activity (description) VALUES (?1)", (&desc,))
+            .execute(
+                "INSERT INTO activity (description) VALUES (?1)",
+                (&desc,), //, now),
+            )
             .expect("RUSCLOCK0002: There was a problem when saving an activity.");
     }
 

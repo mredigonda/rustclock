@@ -10,15 +10,15 @@ pub struct Activity {
 }
 
 impl Activity {
-    // pub fn new(description: String) -> Self {
-    //     let now = time::Time::now();
-    //     Activity {
-    //         id: -1,
-    //         description,
-    //         start_time: now,
-    //         end_time: None,
-    //     }
-    // }
+    pub fn new(description: String) -> Self {
+        let now = time::Time::now();
+        Activity {
+            id: -1,
+            description,
+            start_time: now,
+            end_time: None,
+        }
+    }
 
     pub fn end_now(&mut self) {
         self.end_time = Some(time::Time::now());

@@ -1,8 +1,10 @@
-use inquire::{Confirm, Text};
+use inquire::{Confirm, Select, Text};
 use rusqlite::Connection;
 use std::error;
 
 mod activity;
+mod constants;
+mod project;
 mod time;
 
 fn main() -> Result<(), Box<dyn error::Error>> {
@@ -14,7 +16,26 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         let create_new = Confirm::new("Do you wish to create one?").prompt()?;
         if create_new {
             let activity_name = Text::new("Activity name:").prompt()?;
-            // let activity_project = Select::new("Project:", get_projects()).prompt()?;
+            let projects = project::Project::get_projects();
+            let project_names = projects
+                .iter()
+                .map(|project| {
+                    let x = &project;
+                    x.name.clone()
+                })
+                .collect();
+            let mut activity_project = Select::new("Project:", project_names).prompt()?;
+            if activity_project == String::from(constants::CREATE_NEW_PROJECT_STRING) {
+                let project_name = Text::new("Project name:").prompt()?;
+                println!(
+                    "TODO: Should try to create new project named: {}",
+                    project_name
+                );
+                activity_project = String::from("new project!");
+            } else {
+                // todo: also get new project id, to use it in activity...
+            }
+            println!("Should be created in project: {}", activity_project);
             let new_activity = activity::Activity::new(activity_name);
             new_activity.save(&mut conn);
         } else {
@@ -40,7 +61,3 @@ fn main() -> Result<(), Box<dyn error::Error>> {
 
     Ok(())
 }
-
-// fn get_projects() -> Vec<String> {
-//     vec![String::from("<Create new>")]
-// }

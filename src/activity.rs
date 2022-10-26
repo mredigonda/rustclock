@@ -13,9 +13,9 @@ impl Activity {
         }
     }
 
-    pub fn get_current() -> Option<Self> {
-        None
-    }
+    // pub fn get_current() -> Option<Self> {
+    //     None
+    // }
 
     pub fn save(&self, storage: &mut Connection) {
         Self::initialize_storage(storage);

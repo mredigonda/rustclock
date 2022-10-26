@@ -29,12 +29,25 @@ impl Activity {
         let desc: &String = &self.description;
         let now = time::Time::now();
 
-        storage
-            .execute(
-                "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
-                (&desc, now),
-            )
-            .expect("RUSCLOCK0002: There was a problem when saving an activity.");
+        if self.id == -1 {
+            // In this case, we have a new activity that does not yet have an allocated id
+            // We need to INSERT it into the storage
+            storage
+                .execute(
+                    "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
+                    (&desc, now),
+                )
+                .expect("RUSCLOCK0002: There was a problem when saving an activity.");
+        } else {
+            // In this case, we have an already-existing activity
+            // We need to UPDATE it in the storage
+            storage
+                .execute(
+                    "UPDATE activity SET description=?1, start_time=?2, end_time=?3 WHERE id=1;",
+                    (&desc, &self.start_time, &self.end_time),
+                )
+                .expect("RUSCLOCK0003: There was a problem when updating an activity.");
+        }
     }
 
     // TODO: update this to return an Result<Option<Activity>, ...> since it's possible to not have a current activity

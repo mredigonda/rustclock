@@ -7,16 +7,18 @@ pub struct Activity {
     pub description: String,
     pub start_time: String,
     pub end_time: Option<String>,
+    pub project_id: i64,
 }
 
 impl Activity {
-    pub fn new(description: String) -> Self {
+    pub fn new(description: String, project_id: i64) -> Self {
         let now = time::Time::now();
         Activity {
             id: -1,
             description,
             start_time: now,
             end_time: None,
+            project_id,
         }
     }
 
@@ -63,7 +65,7 @@ impl Activity {
     pub fn get_current(storage: &mut Connection) -> Result<Option<Activity>, rusqlite::Error> {
         Self::initialize_storage(storage);
         let mut statement = storage.prepare(
-            "SELECT id, description, start_time, end_time FROM activity WHERE end_time IS NULL",
+            "SELECT id, description, start_time, end_time, project_id FROM activity WHERE end_time IS NULL",
         )?;
         let mut activity_iter = statement.query_map([], |row| {
             Ok(Activity {
@@ -71,6 +73,7 @@ impl Activity {
                 description: row.get(1)?,
                 start_time: row.get(2)?,
                 end_time: row.get(3)?,
+                project_id: row.get(4)?,
             })
         })?;
         let x = activity_iter.next();
@@ -87,7 +90,9 @@ impl Activity {
                         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         description VARCHAR(255) NOT NULL,
                         start_time VARCHAR(255) NOT NULL,
-                        end_time VARCHAR(255)
+                        end_time VARCHAR(255),
+                        project_id INT NOT NULL,
+                        FOREIGN KEY (project_id) REFERENCES project(project_id)
                 )",
                 (),
             )

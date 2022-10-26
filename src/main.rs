@@ -16,7 +16,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         let create_new = Confirm::new("Do you wish to create one?").prompt()?;
         if create_new {
             let activity_name = Text::new("Activity name:").prompt()?;
-            let projects = project::Project::get_projects();
+            let projects = project::Project::get_projects(&mut conn).unwrap();
             let project_names = projects
                 .iter()
                 .map(|project| {
@@ -40,8 +40,11 @@ fn main() -> Result<(), Box<dyn error::Error>> {
             } else {
                 // todo: also get new project id, to use it in activity...
             }
+            let project_id =
+                project::Project::get_project_id_from_name(&mut conn, &activity_project)
+                    .expect("RUSTCLOCK0006: Could not get id from project name.");
             println!("Should be created in project: {}", activity_project);
-            let mut new_activity = activity::Activity::new(activity_name);
+            let mut new_activity = activity::Activity::new(activity_name, project_id);
             new_activity.save(&mut conn);
         } else {
             println!("😠 Ok bye.");

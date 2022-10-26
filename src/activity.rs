@@ -43,8 +43,8 @@ impl Activity {
             // We need to UPDATE it in the storage
             storage
                 .execute(
-                    "UPDATE activity SET description=?1, start_time=?2, end_time=?3 WHERE id=1;",
-                    (&desc, &self.start_time, &self.end_time),
+                    "UPDATE activity SET description=?1, start_time=?2, end_time=?3 WHERE id=?4;",
+                    (&desc, &self.start_time, &self.end_time, &self.id),
                 )
                 .expect("RUSCLOCK0003: There was a problem when updating an activity.");
         }

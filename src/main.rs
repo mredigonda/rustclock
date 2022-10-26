@@ -31,7 +31,9 @@ fn main() -> Result<(), Box<dyn error::Error>> {
                     "TODO: Should try to create new project named: {}",
                     project_name
                 );
-                activity_project = String::from("new project!");
+                let new_project = project::Project::new(project_name);
+                new_project.save(&mut conn);
+                activity_project = new_project.name;
             } else {
                 // todo: also get new project id, to use it in activity...
             }

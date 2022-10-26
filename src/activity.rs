@@ -45,7 +45,8 @@ impl Activity {
                     "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
                     (&desc, now),
                 )
-                .expect("RUSCLOCK0002: There was a problem when saving an activity.");
+                .expect("RUSTCLOCK0002: There was a problem when saving an activity.");
+            // TODO: should assign a correct ID once it's inserted
         } else {
             // In this case, we have an already-existing activity
             // We need to UPDATE it in the storage
@@ -54,7 +55,7 @@ impl Activity {
                     "UPDATE activity SET description=?1, start_time=?2, end_time=?3 WHERE id=?4;",
                     (&desc, &self.start_time, &self.end_time, &self.id),
                 )
-                .expect("RUSCLOCK0003: There was a problem when updating an activity.");
+                .expect("RUSTCLOCK0003: There was a problem when updating an activity.");
         }
     }
 

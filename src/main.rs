@@ -37,8 +37,6 @@ fn main() -> Result<(), Box<dyn error::Error>> {
                 println!("{:?}", new_project);
 
                 activity_project = new_project.name;
-            } else {
-                // todo: also get new project id, to use it in activity...
             }
             let project_id =
                 project::Project::get_project_id_from_name(&mut conn, &activity_project)

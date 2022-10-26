@@ -38,7 +38,6 @@ impl Activity {
         Self::initialize_storage(storage);
         let desc: &String = &self.description;
         let now = time::Time::now();
-        println!("Project id: {}", self.project_id);
 
         if self.id == -1 {
             // In this case, we have a new activity that does not yet have an allocated id

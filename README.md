@@ -1,9 +1,10 @@
 <p align="center">
-  <img width="300" height="300" src="https://user-images.githubusercontent.com/25920622/198073378-9a9800d0-8fd4-4b4c-afea-cfd426164806.png">
-  <h1>RustClock</h1>
+  <img width="150" height="150" src="https://user-images.githubusercontent.com/25920622/198073378-9a9800d0-8fd4-4b4c-afea-cfd426164806.png">
+  <h1 align="center">RustClock</h1>
+  <p align="center">
+  RustClock is an extremely easy-to-use time tracking tool for the command line.
+  </p>
 </p>
-
-RustClock is an extremely easy-to-use time tracking tool for the command line.
 
 ## Demo
 

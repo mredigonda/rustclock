@@ -1,4 +1,4 @@
-use crate::time;
+use crate::{project::Project, time};
 use rusqlite::Connection;
 
 #[derive(Debug)]
@@ -22,11 +22,41 @@ impl Activity {
         }
     }
 
-    pub fn get_report(&self) -> String {
+    pub fn get_report(&self, storage: &mut Connection) -> String {
+        Self::initialize_storage(storage);
+
+        let mut statement = storage
+            .prepare("SELECT id, name FROM project WHERE id = :id")
+            .unwrap();
+        let mut project_iter = statement
+            .query_map(&[(":id", self.project_id.to_string().as_str())], |row| {
+                Ok(Project {
+                    id: row.get(0)?,
+                    name: row.get(1)?,
+                })
+            })
+            .unwrap();
+        let p = project_iter.next().unwrap();
+        let project = p.unwrap();
+
+        // storage.execute("SELECT name FROM project WHERE id=(?1)", (self.project_id,));
+        // let mut statement = storage.prepare(
+        //     "SELECT id, description, start_time, end_time, project_id FROM activity WHERE end_time IS NULL"
+        // )?;
+        // let mut activity_iter = statement.query_map([], |row| {
+        //     Ok(Activity {
+        //         id: row.get(0)?,
+        //         description: row.get(1)?,
+        //         start_time: row.get(2)?,
+        //         end_time: row.get(3)?,
+        //         project_id: row.get(4)?,
+        //     })
+        // })?;
+
         let duration_str = time::Time::elapsed_since(&self.start_time);
         format!(
             "Activity: {} | Project: {} | Duration: {}",
-            self.description, "<project>", duration_str,
+            self.description, project.name, duration_str,
         )
     }
 

@@ -1,11 +1,12 @@
-use inquire::{error::InquireResult, Select, Text};
+use inquire::{Select, Text};
 use rusqlite::Connection;
+use std::error;
 
 mod activity;
 mod state;
 mod time;
 
-fn main() -> InquireResult<()> {
+fn main() -> Result<(), Box<dyn error::Error>> {
     // let current_activity =
     //     activity::Activity::get_current().expect("Oops, parece que no hay actividad actual.");
     let initial_state = state::State::new();
@@ -30,6 +31,9 @@ fn main() -> InquireResult<()> {
 
     let mut conn = Connection::open("./.rustclock.db3").unwrap();
     new_activity.save(&mut conn);
+
+    let current_activity = activity::Activity::get_current(&mut conn)?;
+    println!("Current activity: {:?}", current_activity);
 
     Ok(())
 }

@@ -31,14 +31,17 @@ fn main() -> Result<(), Box<dyn error::Error>> {
                     "TODO: Should try to create new project named: {}",
                     project_name
                 );
-                let new_project = project::Project::new(project_name);
+                let mut new_project = project::Project::new(project_name);
                 new_project.save(&mut conn);
+
+                println!("{:?}", new_project);
+
                 activity_project = new_project.name;
             } else {
                 // todo: also get new project id, to use it in activity...
             }
             println!("Should be created in project: {}", activity_project);
-            let new_activity = activity::Activity::new(activity_name);
+            let mut new_activity = activity::Activity::new(activity_name);
             new_activity.save(&mut conn);
         } else {
             println!("😠 Ok bye.");
@@ -50,7 +53,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         if end_now {
             activity.end_now();
             activity.save(&mut conn);
-            println!("Task was finished 🎉.");
+            println!("Activity was finished 🎉.");
         } else {
             println!("😒 Whatever.");
         }

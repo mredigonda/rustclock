@@ -2,8 +2,9 @@ use rusqlite::Connection;
 
 use crate::constants;
 
+#[derive(Debug)]
 pub struct Project {
-    pub id: i32,
+    pub id: i64,
     pub name: String,
 }
 
@@ -19,7 +20,7 @@ impl Project {
         }]
     }
 
-    pub fn save(&self, storage: &mut Connection) {
+    pub fn save(&mut self, storage: &mut Connection) {
         Self::initialize_storage(storage);
         storage
             .execute(
@@ -28,8 +29,7 @@ impl Project {
                 (&self.name,),
             )
             .expect("RUSTCLOCK0005: There was a problem when saving a project.");
-
-        // TODO: maybe return id...
+        self.id = storage.last_insert_rowid();
     }
 
     fn initialize_storage(storage: &mut Connection) {

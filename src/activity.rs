@@ -3,7 +3,7 @@ use rusqlite::Connection;
 
 #[derive(Debug)]
 pub struct Activity {
-    pub id: i32,
+    pub id: i64,
     pub description: String,
     pub start_time: String,
     pub end_time: Option<String>,
@@ -23,7 +23,7 @@ impl Activity {
     pub fn get_report(&self) -> String {
         let duration_str = time::Time::elapsed_since(&self.start_time);
         format!(
-            "Activity \"{}\" from project \"{}\" was started on {}",
+            "Activity: {} | Project: {} | Duration: {}",
             self.description, "<project>", duration_str,
         )
     }
@@ -32,7 +32,7 @@ impl Activity {
         self.end_time = Some(time::Time::now());
     }
 
-    pub fn save(&self, storage: &mut Connection) {
+    pub fn save(&mut self, storage: &mut Connection) {
         Self::initialize_storage(storage);
         let desc: &String = &self.description;
         let now = time::Time::now();
@@ -46,7 +46,7 @@ impl Activity {
                     (&desc, now),
                 )
                 .expect("RUSTCLOCK0002: There was a problem when saving an activity.");
-            // TODO: should assign a correct ID once it's inserted
+            self.id = storage.last_insert_rowid();
         } else {
             // In this case, we have an already-existing activity
             // We need to UPDATE it in the storage

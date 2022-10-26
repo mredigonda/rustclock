@@ -8,4 +8,7 @@ impl State {
             current_activity: Some(0),
         }
     }
+    pub fn is_tracking_activity() -> bool {
+        false
+    }
 }

@@ -1,6 +1,7 @@
 use inquire::{error::InquireResult, Select, Text};
 use rusqlite::Connection;
 
+mod activity;
 mod state;
 
 #[derive(Debug)]
@@ -11,6 +12,10 @@ struct Person {
 }
 
 fn main() -> InquireResult<()> {
+    let new_activity = activity::Activity::new(String::from("nueva tarea"));
+
+    // let current_activity =
+    //     activity::Activity::get_current().expect("Oops, parece que no hay actividad actual.");
     let initial_state = state::State::new();
 
     println!(
@@ -29,7 +34,8 @@ fn main() -> InquireResult<()> {
         activity_name, activity_project, 1
     );
 
-    let conn = Connection::open("./.rustclock.db3").unwrap();
+    let mut conn = Connection::open("./.rustclock.db3").unwrap();
+    new_activity.save(&mut conn);
 
     conn.execute(
         "CREATE TABLE IF NOT EXISTS person (

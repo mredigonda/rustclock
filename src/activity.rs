@@ -10,15 +10,15 @@ pub struct Activity {
 }
 
 impl Activity {
-    pub fn new(description: String) -> Self {
-        let now = time::Time::now();
-        Activity {
-            id: -1,
-            description,
-            start_time: now,
-            end_time: None,
-        }
-    }
+    // pub fn new(description: String) -> Self {
+    //     let now = time::Time::now();
+    //     Activity {
+    //         id: -1,
+    //         description,
+    //         start_time: now,
+    //         end_time: None,
+    //     }
+    // }
 
     pub fn end_now(&mut self) {
         self.end_time = Some(time::Time::now());
@@ -51,7 +51,7 @@ impl Activity {
     }
 
     // TODO: update this to return an Result<Option<Activity>, ...> since it's possible to not have a current activity
-    pub fn get_current(storage: &mut Connection) -> Result<Activity, rusqlite::Error> {
+    pub fn get_current(storage: &mut Connection) -> Result<Option<Activity>, rusqlite::Error> {
         Self::initialize_storage(storage);
         let mut statement = storage.prepare(
             "SELECT id, description, start_time, end_time FROM activity WHERE end_time IS NULL",
@@ -64,8 +64,11 @@ impl Activity {
                 end_time: row.get(3)?,
             })
         })?;
-        let x = activity_iter.next().unwrap();
-        x
+        let x = activity_iter.next();
+        match x {
+            Some(result) => Ok(Some(result?)),
+            None => Ok(None),
+        }
     }
 
     fn initialize_storage(storage: &mut Connection) {

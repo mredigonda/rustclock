@@ -3,19 +3,9 @@ use rusqlite::Connection;
 use std::error;
 
 mod activity;
-mod state;
 mod time;
 
 fn main() -> Result<(), Box<dyn error::Error>> {
-    // let current_activity =
-    //     activity::Activity::get_current().expect("Oops, parece que no hay actividad actual.");
-    let initial_state = state::State::new();
-
-    println!(
-        "No current activity! [{}]",
-        initial_state.current_activity.unwrap()
-    );
-
     let activity_name = Text::new("Activity name:").prompt()?;
     println!("{}", activity_name);
 

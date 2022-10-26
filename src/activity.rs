@@ -20,6 +20,24 @@ impl Activity {
         }
     }
 
+    pub fn end_now(&mut self) {
+        self.end_time = Some(time::Time::now());
+    }
+
+    pub fn save(&self, storage: &mut Connection) {
+        Self::initialize_storage(storage);
+        let desc: &String = &self.description;
+        let now = time::Time::now();
+
+        storage
+            .execute(
+                "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
+                (&desc, now),
+            )
+            .expect("RUSCLOCK0002: There was a problem when saving an activity.");
+    }
+
+    // TODO: update this to return an Result<Option<Activity>, ...> since it's possible to not have a current activity
     pub fn get_current(storage: &mut Connection) -> Result<Activity, rusqlite::Error> {
         Self::initialize_storage(storage);
         let mut statement = storage.prepare(
@@ -35,19 +53,6 @@ impl Activity {
         })?;
         let x = activity_iter.next().unwrap();
         x
-    }
-
-    pub fn save(&self, storage: &mut Connection) {
-        Self::initialize_storage(storage);
-        let desc: &String = &self.description;
-        let now = time::Time::now();
-
-        storage
-            .execute(
-                "INSERT INTO activity (description, start_time) VALUES (?1, ?2)",
-                (&desc, now),
-            )
-            .expect("RUSCLOCK0002: There was a problem when saving an activity.");
     }
 
     fn initialize_storage(storage: &mut Connection) {

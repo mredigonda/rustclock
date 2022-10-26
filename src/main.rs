@@ -32,8 +32,11 @@ fn main() -> Result<(), Box<dyn error::Error>> {
     let mut conn = Connection::open("./.rustclock.db3").unwrap();
     new_activity.save(&mut conn);
 
-    let current_activity = activity::Activity::get_current(&mut conn)?;
+    let mut current_activity = activity::Activity::get_current(&mut conn)?;
     println!("Current activity: {:?}", current_activity);
+
+    current_activity.end_now();
+    current_activity.save(&mut conn);
 
     Ok(())
 }

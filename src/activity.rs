@@ -20,6 +20,13 @@ impl Activity {
         }
     }
 
+    pub fn get_report(&self) -> String {
+        format!(
+            "Activity \"{}\" from project \"{}\" was started on {}",
+            self.description, "<project>", self.start_time,
+        )
+    }
+
     pub fn end_now(&mut self) {
         self.end_time = Some(time::Time::now());
     }

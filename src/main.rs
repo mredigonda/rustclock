@@ -22,6 +22,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
         }
     } else {
         let mut activity = current_activity.unwrap();
+        println!("{}", activity.get_report());
         let end_now = Confirm::new("Do you wish to end it now?").prompt()?;
         if end_now {
             activity.end_now();
